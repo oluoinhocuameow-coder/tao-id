@@ -1,0 +1,949 @@
+
+<!-- =====================================================
+🐱 MEOW ID ĐỘC GIẢ — FIREBASE REALTIME DATABASE
+Project: olncm-fa88c
+Lưu tại: customers/{ID}
+===================================================== -->
+
+<style>
+#meow-id-widget,
+#meow-id-widget *{box-sizing:border-box}
+
+#meow-id-widget{
+  --mi-pink:#ff65aa;
+  --mi-deep:#d83f91;
+  width:100%;
+  max-width:580px;
+  margin:22px auto;
+  padding:clamp(16px,4vw,25px);
+  border:2px solid #ffc4e1;
+  border-radius:28px;
+  background:
+    radial-gradient(ellipse at 0% 0%,#ffe0f0 0,transparent 38%),
+    radial-gradient(ellipse at 100% 100%,#f0e4ff 0,transparent 35%),
+    linear-gradient(145deg,#fffaff,#fff1f8);
+  box-shadow:0 12px 32px #ec83bd30;
+  color:#87436f;
+  font-family:Arial,sans-serif;
+  overflow:hidden;
+}
+
+#meow-id-widget .mi-header{
+  text-align:center;
+  padding:5px 0 20px;
+}
+
+#meow-id-widget .mi-cat{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:76px;
+  height:76px;
+  border-radius:50%;
+  background:linear-gradient(145deg,#ffe1f0,#fff);
+  border:2px solid #ffd0e7;
+  box-shadow:0 6px 15px #f4a2cc50;
+  font-size:42px;
+  animation:miFloat 3s ease-in-out infinite;
+}
+
+#meow-id-widget .mi-header h2{
+  margin:12px 0 7px;
+  color:var(--mi-deep);
+  font-size:clamp(21px,5vw,29px);
+  line-height:1.35;
+  font-weight:900;
+}
+
+#meow-id-widget .mi-sub{
+  margin:0;
+  color:#ad7b9d;
+  font-size:13px;
+  line-height:1.7;
+}
+
+#meow-id-widget .mi-label{
+  display:block;
+  margin:10px 0 8px;
+  color:#a34382;
+  font-size:14px;
+  font-weight:800;
+}
+
+#meow-id-widget .mi-input{
+  display:block;
+  width:100%;
+  min-width:0;
+  height:52px;
+  padding:0 15px;
+  border:1.5px solid #ffc0df;
+  border-radius:16px;
+  outline:none;
+  background:#fff;
+  color:#73385f;
+  font-size:16px;
+  box-shadow:0 3px 10px #edafd01c;
+  transition:.2s;
+}
+
+#meow-id-widget .mi-input:focus{
+  border-color:#ff68ad;
+  box-shadow:0 0 0 4px #ff9bcb30;
+}
+
+#meow-id-widget .mi-create{
+  display:block;
+  width:100%;
+  min-height:54px;
+  margin-top:17px;
+  padding:13px;
+  border:0;
+  border-radius:18px;
+  background:linear-gradient(135deg,#ffa4d1 0%,#ff69b0 55%,#f34d9e 100%);
+  color:#fff;
+  font-size:15px;
+  font-weight:900;
+  letter-spacing:.3px;
+  cursor:pointer;
+  box-shadow:0 6px 0 #dc4b93,0 11px 20px #ff78b53b;
+  transition:transform .18s,opacity .18s;
+}
+
+#meow-id-widget .mi-create:hover{
+  filter:brightness(1.03);
+  transform:translateY(-1px);
+}
+
+#meow-id-widget .mi-create:active{
+  transform:translateY(3px);
+  box-shadow:0 3px 0 #dc4b93;
+}
+
+#meow-id-widget .mi-create:disabled{
+  opacity:.65;
+  cursor:wait;
+}
+
+#meow-id-widget .mi-result{
+  display:none;
+  margin-top:22px;
+  padding:16px;
+  border:1.5px dashed #ff9bce;
+  border-radius:22px;
+  background:#fff9fded;
+  animation:miShow .3s ease;
+}
+
+#meow-id-widget .mi-result-title{
+  margin:0 0 15px;
+  color:#d64797;
+  font-size:17px;
+  font-weight:900;
+}
+
+#meow-id-widget .mi-result-label{
+  margin:11px 0 7px;
+  color:#aa5790;
+  font-size:13px;
+  font-weight:800;
+}
+
+#meow-id-widget .mi-name{
+  padding:12px 14px;
+  border:1px solid #ffe0ef;
+  border-radius:14px;
+  background:white;
+  color:#87436f;
+  font-size:15px;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+
+#meow-id-widget .mi-id-row{
+  display:flex;
+  align-items:stretch;
+  gap:8px;
+}
+
+#meow-id-widget .mi-id-code{
+  display:flex;
+  flex:1;
+  min-width:0;
+  min-height:48px;
+  align-items:center;
+  justify-content:center;
+  padding:10px 8px;
+  border:1.5px solid #ffb8dc;
+  border-radius:14px;
+  background:#fff;
+  color:#e13e95;
+  font-size:clamp(13px,3.7vw,18px);
+  font-weight:900;
+  text-align:center;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+#meow-id-widget .mi-copy{
+  flex-shrink:0;
+  width:48px;
+  min-height:48px;
+  border:0;
+  border-radius:14px;
+  background:linear-gradient(145deg,#ffe3f1,#ffd0e7);
+  color:#ce438e;
+  font-size:21px;
+  cursor:pointer;
+}
+
+#meow-id-widget .mi-note{
+  margin-top:15px;
+  padding:12px;
+  border-radius:15px;
+  background:linear-gradient(135deg,#ffedf7,#f4ebff);
+  color:#95668c;
+  font-size:12px;
+  line-height:1.8;
+}
+
+#meow-id-widget .mi-message{
+  min-height:20px;
+  margin:13px 0 0;
+  color:#d44291;
+  font-size:13px;
+  line-height:1.7;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+
+#meow-id-widget .mi-footer{
+  margin-top:18px;
+  color:#d681b1;
+  font-size:12px;
+  text-align:center;
+}
+
+@keyframes miFloat{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%{transform:translateY(-5px) rotate(2deg)}
+}
+
+@keyframes miShow{
+  from{opacity:0;transform:translateY(9px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:380px){
+  #meow-id-widget{padding:15px;border-radius:22px}
+  #meow-id-widget .mi-result{padding:12px}
+  #meow-id-widget .mi-copy{width:43px}
+}
+</style>
+
+<div id="meow-id-widget">
+  <div class="mi-header">
+    <div class="mi-cat">🐱🎀</div>
+    <h2>💗 MEOW ID ĐỘC GIẢ 💗</h2>
+    <p class="mi-sub">
+      Tạo mã độc giả của riêng bạn nè!<br>
+      Một chiếc ID nhỏ, đồng hành cùng Meow 🐾
+    </p>
+  </div>
+
+  <label class="mi-label" for="mi-customer-name">
+    🐾 Tên khách hàng
+  </label>
+
+  <input
+    class="mi-input"
+    id="mi-customer-name"
+    type="text"
+    maxlength="60"
+    autocomplete="nickname"
+    placeholder="Nhập tên của bạn..."
+  >
+
+  <button
+    class="mi-create"
+    id="mi-create-btn"
+    type="button"
+  >
+    ✨ 🐾 TẠO ID CỦA TUI 🐾 ✨
+  </button>
+
+  <div class="mi-result" id="mi-result">
+    <p class="mi-result-title">🎀 Thông tin của bạn</p>
+
+    <div class="mi-result-label">🌸 Tên khách hàng</div>
+    <div class="mi-name" id="mi-show-name"></div>
+
+    <div class="mi-result-label">💌 ID độc giả của bạn</div>
+    <div class="mi-id-row">
+      <div class="mi-id-code" id="mi-show-id"></div>
+      <button
+        class="mi-copy"
+        id="mi-copy-btn"
+        type="button"
+        aria-label="Sao chép ID"
+        title="Sao chép ID"
+      >📋</button>
+    </div>
+
+    <div class="mi-note">
+      💖 Hãy lưu ID này cẩn thận nha!
+    </div>
+  </div>
+
+  <p class="mi-message" id="mi-message" aria-live="polite"></p>
+
+  <div class="mi-footer">
+    ♡ Ổ LƯỜI NHỎ CỦA MEOW · Tạo ID đọc truyện nào ♡
+  </div>
+</div>
+
+
+<script type="module">
+import {
+  initializeApp,
+  getApps,
+  getApp
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+import {
+  getDatabase,
+  ref,
+  get,
+  runTransaction
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCMUFJMj74GHONpCj3thoTIc2TfZyc91b8",
+  authDomain: "olncm-fa88c.firebaseapp.com",
+  databaseURL: "https://olncm-fa88c-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "olncm-fa88c",
+  storageBucket: "olncm-fa88c.firebasestorage.app",
+  messagingSenderId: "1047257801200",
+  appId: "1:1047257801200:web:d051244e609b2285ddbd35",
+  measurementId: "G-4ZLN7YHC8B"
+};
+
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const $ = id => document.getElementById("mi-" + id);
+
+const nameInput = $("customer-name");
+const createBtn = $("create-btn");
+const messageBox = $("message");
+const resultBox = $("result");
+const copyBtn = $("copy-btn");
+
+const STORAGE_ID = "MEOW_READER_CUSTOMER_ID";
+const STORAGE_NAME = "MEOW_READER_CUSTOMER_NAME";
+
+let createdCustomerID = "";
+let busy = false;
+
+function showMessage(text) {
+  messageBox.textContent = text;
+}
+
+function showCustomer(customer) {
+  createdCustomerID = customer.id;
+
+  $("show-name").textContent = customer.name;
+  $("show-id").textContent = customer.id;
+
+  resultBox.style.display = "block";
+  nameInput.value = customer.name;
+
+  // Khóa form sau khi đã có ID.
+  nameInput.disabled = true;
+  createBtn.disabled = true;
+  createBtn.textContent = "💗 BẠN ĐÃ CÓ ID RỒI 💗";
+
+  try {
+    localStorage.setItem(STORAGE_ID, customer.id);
+    localStorage.setItem(STORAGE_NAME, customer.name);
+  } catch (e) {}
+
+  showMessage("🎀 ID của bạn đã được lưu. Không cần tạo lại nha!");
+}
+
+// Chuẩn hóa tên để tránh trùng do chữ hoa, chữ thường,
+// dấu cách thừa hoặc cách viết Unicode tương đương.
+function normalizeName(name) {
+  return name
+    .normalize("NFC")
+    .trim()
+    .replace(/\s+/g, " ")
+    .toLocaleLowerCase("vi");
+}
+
+// Tạo khóa SHA-256 để dùng tên làm khóa Firebase an toàn.
+async function makeNameKey(name) {
+  const normalized = normalizeName(name);
+  const bytes = new TextEncoder().encode(normalized);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+
+  return Array.from(new Uint8Array(digest))
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+// Khôi phục ID sau khi tải lại trang.
+async function restoreCustomer() {
+  let savedID = "";
+
+  try {
+    savedID = localStorage.getItem(STORAGE_ID) || "";
+  } catch (e) {}
+
+  if (!savedID) return;
+
+  createBtn.disabled = true;
+  showMessage("☁️ Meow đang khôi phục ID của bạn...");
+
+  try {
+    const snapshot = await get(ref(db, "customers/" + savedID));
+
+    if (snapshot.exists()) {
+      const customer = snapshot.val();
+
+      if (customer.id === savedID) {
+        showCustomer(customer);
+        return;
+      }
+    }
+
+    showMessage(
+      "⚠️ Không tìm thấy ID đã lưu trên Firebase. " +
+      "Vui lòng liên hệ Meow để được hỗ trợ."
+    );
+    createBtn.disabled = true;
+
+  } catch (error) {
+    console.error(error);
+    showMessage("❌ Không thể kiểm tra ID. Hãy tải lại trang khi có mạng.");
+    createBtn.disabled = true;
+  }
+}
+
+createBtn.addEventListener("click", async () => {
+  if (busy || createdCustomerID) return;
+
+  const customerName = nameInput.value.trim();
+
+  if (!customerName) {
+    showMessage("🌸 Nhập tên khách hàng trước nha!");
+    nameInput.focus();
+    return;
+  }
+
+  if (customerName.length > 60) {
+    showMessage("💗 Tên khách tối đa 60 ký tự nha!");
+    return;
+  }
+
+  if (!normalizeName(customerName)) {
+    showMessage("🌸 Tên khách không hợp lệ nha!");
+    return;
+  }
+
+  busy = true;
+  createBtn.disabled = true;
+  showMessage("☁️ Meow đang kiểm tra tên và tạo ID...");
+
+  let nameIndexRef = null;
+  let claimedID = "";
+
+  try {
+    const nameKey = await makeNameKey(customerName);
+
+    // Mỗi tên chỉ được chiếm một mục trong chỉ mục toàn hệ thống.
+    nameIndexRef = ref(db, "customerNameIndex/" + nameKey);
+
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let savedCustomer = null;
+
+    for (let attempt = 0; attempt < 10; attempt++) {
+      const bytes = crypto.getRandomValues(new Uint8Array(8));
+      const suffix = Array.from(bytes, b => chars[b % chars.length]).join("");
+      const customerID = "MEOW-" + suffix;
+
+      const indexResult = await runTransaction(
+        nameIndexRef,
+        current => {
+          // Tên đã được đăng ký: không tạo ID mới.
+          if (current !== null) return;
+
+          return {
+            id: customerID,
+            name: customerName,
+            createdAt: Date.now()
+          };
+        },
+        { applyLocally: false }
+      );
+
+      if (!indexResult.committed) {
+        const existingID = indexResult.snapshot.val()?.id || "";
+
+        if (existingID) {
+          const existingCustomer = await get(
+            ref(db, "customers/" + existingID)
+          );
+
+          if (
+            existingCustomer.exists() &&
+            existingCustomer.val().id === existingID
+          ) {
+            showMessage(
+              "💗 Tên này đã được đăng ký ID rồi. " +
+              "Hệ thống không tạo ID mới. Nếu đây là bạn, " +
+              "hãy khôi phục ID cũ hoặc liên hệ Meow nha!"
+            );
+          } else {
+            showMessage(
+              "⚠️ Tên này đã được giữ chỗ trên hệ thống. " +
+              "Vui lòng liên hệ Meow để kiểm tra."
+            );
+          }
+          return;
+        }
+
+        throw new Error("Không thể xác nhận trạng thái tên.");
+      }
+
+      claimedID = customerID;
+
+      const customerRef = ref(db, "customers/" + customerID);
+
+      const customerResult = await runTransaction(
+        customerRef,
+        current => {
+          if (current !== null) return;
+
+          return {
+            id: customerID,
+            name: customerName,
+            mail: "",
+            vip: {},
+            books: {},
+            notify: {},
+            createdAt: Date.now()
+          };
+        },
+        { applyLocally: false }
+      );
+
+      if (
+        customerResult.committed &&
+        customerResult.snapshot.exists() &&
+        customerResult.snapshot.val().id === customerID
+      ) {
+        savedCustomer = customerResult.snapshot.val();
+        break;
+      }
+
+      // ID ngẫu nhiên bị trùng: giải phóng tên đã giữ để thử lại.
+      await runTransaction(
+        nameIndexRef,
+        current => current?.id === customerID ? null : undefined,
+        { applyLocally: false }
+      );
+
+      claimedID = "";
+    }
+
+    if (!savedCustomer) {
+      throw new Error("Không tạo được ID mới. Vui lòng thử lại.");
+    }
+
+    showCustomer(savedCustomer);
+
+  } catch (error) {
+    console.error("MEOW ID error:", error);
+
+    // Chỉ giải phóng mục tên nếu nó vẫn thuộc lượt đăng ký này
+    // và chưa tạo được khách hàng tương ứng.
+    if (nameIndexRef && claimedID && !createdCustomerID) {
+      try {
+        const customerSnap = await get(
+          ref(db, "customers/" + claimedID)
+        );
+
+        if (!customerSnap.exists()) {
+          await runTransaction(
+            nameIndexRef,
+            current => current?.id === claimedID ? null : undefined,
+            { applyLocally: false }
+          );
+        }
+      } catch (cleanupError) {
+        console.error("MEOW cleanup error:", cleanupError);
+      }
+    }
+
+    showMessage(
+      "❌ Không thể hoàn tất đăng ký. " +
+      "Kiểm tra kết nối Firebase và Database Rules nha!"
+    );
+
+    createBtn.disabled = false;
+
+  } finally {
+    busy = false;
+  }
+});
+
+copyBtn.addEventListener("click", async () => {
+  if (!createdCustomerID) return;
+
+  try {
+    await navigator.clipboard.writeText(createdCustomerID);
+    showMessage("💖 Đã sao chép ID: " + createdCustomerID);
+  } catch (error) {
+    window.prompt("Sao chép ID độc giả:", createdCustomerID);
+  }
+});
+
+restoreCustomer();
+</script>
+
+
+
+<style>
+/* =========================================
+   🐱 MEOW LINK HUB — PASTEL CANDY
+========================================= */
+#meow-link-hub,
+#meow-link-hub *{box-sizing:border-box}
+
+#meow-link-hub{
+  --pink:#ff70b5;
+  --deep:#d94b98;
+  --purple:#a987ed;
+  width:100%;
+  max-width:760px;
+  margin:20px auto;
+  padding:18px;
+  border:2px solid #ffd0e8;
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 0 0,#ffe0f0 0,transparent 35%),
+    radial-gradient(circle at 100% 100%,#eee4ff 0,transparent 38%),
+    #fffaff;
+  color:#784665;
+  font-family:Arial,sans-serif;
+  box-shadow:0 12px 35px #e8a5cf30;
+}
+#meow-link-hub .mlh-header{
+  text-align:center;
+  padding:10px 5px 20px;
+}
+#meow-link-hub .mlh-logo{
+  font-size:43px;
+  filter:drop-shadow(0 5px 5px #ffb4d7);
+}
+#meow-link-hub .mlh-header h2{
+  margin:8px 0;
+  color:#dc4c99;
+  font-size:clamp(23px,5vw,31px);
+  font-weight:900;
+}
+#meow-link-hub .mlh-header p{
+  margin:0;
+  color:#a77a9a;
+  font-size:13px;
+  line-height:1.8;
+}
+#meow-link-hub .mlh-card{
+  position:relative;
+  margin:14px 0;
+  padding:18px;
+  border:1.5px solid #ffd0e7;
+  border-radius:23px;
+  background:#ffffffd9;
+  box-shadow:0 6px 18px #edb1d51c;
+  overflow:hidden;
+}
+#meow-link-hub .mlh-card.mini{
+  border-color:#e3d5ff;
+  background:linear-gradient(145deg,#fff,#faf6ff);
+}
+#meow-link-hub .mlh-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:0 0 8px;
+  color:#d94b98;
+  font-size:19px;
+  font-weight:900;
+}
+#meow-link-hub .mini .mlh-title{color:#9571d6}
+#meow-link-hub .mlh-desc{
+  margin:0 0 14px;
+  color:#9c7d95;
+  font-size:12px;
+  line-height:1.8;
+}
+#meow-link-hub .mlh-feature{
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  margin:10px 0;
+  font-size:13px;
+  line-height:1.65;
+}
+#meow-link-hub .mlh-dot{
+  display:flex;
+  flex-shrink:0;
+  width:25px;
+  height:25px;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#ffe5f2;
+  color:#d94b98;
+}
+#meow-link-hub .mini .mlh-dot{
+  background:#eee5ff;
+  color:#9571d6;
+}
+#meow-link-hub .mlh-note{
+  margin-top:13px;
+  padding:12px;
+  border-radius:15px;
+  background:#fff0f8;
+  color:#b04f8c;
+  font-size:12px;
+  line-height:1.8;
+}
+#meow-link-hub .mini .mlh-note{
+  background:#f3edff;
+  color:#8265b8;
+}
+#meow-link-hub .mlh-link{
+  display:flex;
+  min-height:47px;
+  width:100%;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin-top:16px;
+  padding:12px;
+  border:0;
+  border-radius:15px;
+  background:linear-gradient(135deg,#ffa4d0,#ff65aa);
+  box-shadow:0 5px 0 #df5598;
+  color:white;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:900;
+  transition:.2s;
+}
+#meow-link-hub .mini .mlh-link{
+  background:linear-gradient(135deg,#c7b0ff,#9676e7);
+  box-shadow:0 5px 0 #8061cf;
+}
+#meow-link-hub .mlh-link:hover{filter:brightness(1.04)}
+#meow-link-hub .mlh-link:active{
+  transform:translateY(3px);
+  box-shadow:0 2px 0 #df5598;
+}
+#meow-link-hub .mlh-contact{
+  margin-top:20px;
+  padding:19px 12px;
+  border:1.5px dashed #f7b9dc;
+  border-radius:22px;
+  background:#fff8fc;
+  text-align:center;
+}
+#meow-link-hub .mlh-contact h3{
+  margin:0 0 7px;
+  color:#d94b98;
+  font-size:17px;
+}
+#meow-link-hub .mlh-contact p{
+  margin:0 0 14px;
+  color:#a77d9a;
+  font-size:12px;
+}
+#meow-link-hub .mlh-socials{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:13px;
+}
+#meow-link-hub .mlh-social{
+  display:flex;
+  width:47px;
+  height:47px;
+  align-items:center;
+  justify-content:center;
+  border:2px solid white;
+  border-radius:50%;
+  background:linear-gradient(145deg,#ffacd4,#f45da8);
+  box-shadow:0 4px 12px #f3a1cb55;
+  color:#fff;
+  font-size:17px;
+  font-weight:900;
+  text-decoration:none;
+  transition:.2s;
+}
+#meow-link-hub .mlh-social:nth-child(2){
+  background:linear-gradient(145deg,#d3baff,#9d7be9);
+}
+#meow-link-hub .mlh-social:nth-child(3){
+  background:linear-gradient(145deg,#ffc7df,#ff83ba);
+}
+#meow-link-hub .mlh-social:hover{transform:translateY(-3px) scale(1.04)}
+#meow-link-hub .mlh-footer{
+  margin-top:17px;
+  color:#cf88b2;
+  font-size:11px;
+  text-align:center;
+}
+@media(max-width:420px){
+  #meow-link-hub{padding:12px;border-radius:22px}
+  #meow-link-hub .mlh-card{padding:15px}
+}
+</style>
+
+<div id="meow-link-hub">
+
+  <div class="mlh-header">
+    <div class="mlh-logo">🐱🎀</div>
+    <h2>Ổ LƯỜI NHỎ CỦA MEOW</h2>
+    <p>
+      Góc nhỏ dành cho độc giả nhà Meow 💗<br>
+      Chọn nơi bạn muốn ghé thăm nha!
+    </p>
+  </div>
+
+  <!-- ==================================
+       1. WEB CHÍNH
+  =================================== -->
+  <section class="mlh-card">
+    <h3 class="mlh-title">🌸 01 · WEB CHÍNH</h3>
+    <p class="mlh-desc">
+      Bạn cần một WIFI cực mạnh để vào WEB này
+    </p>
+
+    <div class="mlh-feature">
+      <span class="mlh-dot">①</span>
+      <div>
+        <b>Kéo xuống mục Meow Login</b><br>
+        Chọn phần <b>Khách</b>, nhập đầy đủ
+        <b>TÊN + ID</b> của bạn.
+      </div>
+    </div>
+
+    <div class="mlh-feature">
+      <span class="mlh-dot">②</span>
+      <div>
+        <b>Không cần đăng nhập lại</b><br>
+        Sau khi xác nhận thông tin thành công,
+       Không cần phải đăng nhập lại nếu kế bên tên truyện có một thanh ngang nha.
+      </div>
+    </div>
+
+    <div class="mlh-feature">
+      <span class="mlh-dot">③</span>
+      <div>
+        <b>Thanh Ngang Kế Bên Tên Truyện Khi Đã Đăng Nhập</b><br>
+       Đó là danh sách bạn đã mua 
+      </div>
+    </div>
+
+    <div class="mlh-note">
+      💌 <b>Lưu ý:</b> Hãy nhập đúng và đầy đủ TÊN + ID đã được tạo.
+     
+    </div>
+
+    <!-- THAY LINK WEB CHÍNH TẠI ĐÂY -->
+    <a class="mlh-link"
+       href="https://trangthongtincuameow.blogspot.com/p/list-truyen_6.html"
+       target="_blank" rel="noopener">
+      🏡 ĐẾN WEB CHÍNH MEOW →
+    </a>
+  </section>
+
+  <!-- ==================================
+       2. MINI WEB
+  =================================== -->
+  <section class="mlh-card mini">
+    <h3 class="mlh-title">💜 02 · MINI WEB</h3>
+    <p class="mlh-desc">
+      Khu vực nạp tiền và mua truyện linh hoạt.
+    </p>
+
+    <div class="mlh-feature">
+      <span class="mlh-dot">♡</span>
+      <div>
+        <b>Nhập ID độc giả</b><br>
+        Dùng ID đã tạo ở TẠO ID để vào nha
+      </div>
+    </div>
+
+    <div class="mlh-feature">
+      <span class="mlh-dot">♡</span>
+      <div>
+        <b>Nạp tiền</b><br>
+        Bạn có thể tạo yêu cầu hoặc liên hệ trực tiếp Meow để mua nhé
+      </div>
+    </div>
+
+    <div class="mlh-feature">
+      <span class="mlh-dot">♡</span>
+      <div>
+        <b>Mua chương lẻ & COMBO</b><br>
+        Chọn chương riêng hoặc combo theo nhu cầu của nàng nha
+      </div>
+    </div>
+
+    <div class="mlh-note">
+      ✨ <b>Thuận tiện:</b> Bấm vào tên tác giả hoặc Tag để tìm truyện nhanh
+    </div>
+
+    <!-- THAY LINK MINI WEB TẠI ĐÂY -->
+    <a class="mlh-link"
+       href="https://oluoinhocuameow2-creator.github.io/meow-reader/"
+       target="_blank" rel="noopener">
+      🛍️ ĐẾN MINI WEB MEOW →
+    </a>
+  </section>
+
+  <!-- ==================================
+       LIÊN HỆ
+  =================================== -->
+  <section class="mlh-contact">
+    <h3>🎀 Nếu có thắc mắc, vui lòng liên hệ 🎀</h3>
+    <p>Meow luôn sẵn lòng hỗ trợ bạn nha!</p>
+
+    <div class="mlh-socials">
+      <!-- THAY LINK FACEBOOK -->
+      <a class="mlh-social"
+         href="https://www.facebook.com/profile.php?id=61583591557663"
+         target="_blank" rel="noopener"
+         aria-label="Facebook">f</a>
+
+      <!-- THAY LINK EMAIL -->
+      <a class="mlh-social"
+         href="oluoinhocuameow@gmail.com"
+         aria-label="Email">@</a>
+
+      <!-- THAY LINK PAGE -->
+      <a class="mlh-social"
+         href="https://www.facebook.com/profile.php?id=61582069564705"
+         target="_blank" rel="noopener"
+         aria-label="Page">P</a>
+    </div>
+  </section>
+
+  <div class="mlh-footer">
+    ♡ Ổ Lười Nhỏ Của Meow ♡
+  </div>
+</div>
+
